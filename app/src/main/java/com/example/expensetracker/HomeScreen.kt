@@ -1,5 +1,6 @@
 package com.example.expensetracker
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,7 +30,6 @@ import androidx.navigation.NavController
 fun HomeScreen(navController: NavController) {
     var searchQuery by remember { mutableStateOf("") }
     var transactions by remember { mutableStateOf(sampleTransactions.toMutableList()) }
-
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF8F8F8))) {
             // Search bar
@@ -68,18 +68,24 @@ fun HomeScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
-
             LazyColumn(modifier = Modifier.weight(1f)) {
                 val filteredTransactions = transactions.filter {
                     it.title.contains(searchQuery, ignoreCase = true) ||
                             it.amount.toString().contains(searchQuery, ignoreCase = true)
                 }
                 items(filteredTransactions) { transaction ->
-                    TransactionCard(transaction, onDelete = {
-                        transactions.remove(transaction)
-                    })
+                    TransactionCard(
+                        transaction = transaction,
+                        onDelete = {
+                            transactions.remove(transaction)
+                        },
+                        onClick = {
+                            navController.navigate("Screen_C") // Navigate to a details screen
+                        }
+                    )
                 }
             }
+
             Box(
                 contentAlignment = Alignment.BottomCenter,
                 modifier = Modifier.fillMaxWidth().padding(50.dp)
@@ -99,9 +105,12 @@ fun HomeScreen(navController: NavController) {
         }
     }
 }
-
 @Composable
-fun TransactionCard(transaction: Transaction, onDelete: () -> Unit) {
+fun TransactionCard(
+    transaction: Transaction,
+    onDelete: () -> Unit,
+    onClick: () -> Unit // Pass an onClick lambda to handle card clicks
+) {
     var offsetX by remember { mutableStateOf(0f) }
     var showDeleteButton by remember { mutableStateOf(false) }
 
@@ -121,6 +130,9 @@ fun TransactionCard(transaction: Transaction, onDelete: () -> Unit) {
                     }
                 )
             }
+            .clickable { onClick(
+//                navController.navigate("Screen_C")
+            ) } // Add the clickable modifier here
     ) {
         Row(
             modifier = Modifier
@@ -155,7 +167,8 @@ fun TransactionCard(transaction: Transaction, onDelete: () -> Unit) {
     }
 }
 
-// Sample Transaction Data
+
+
 data class Transaction(val title: String, val subtitle: String, val date: String, val amount: Double)
 
 val sampleTransactions = listOf(

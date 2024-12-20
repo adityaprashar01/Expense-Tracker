@@ -37,7 +37,19 @@ class MainActivity : ComponentActivity() {
                                 onSave = { date, description, amount, isExpense ->
                                 } )
                         }
-
+                        composable("Screen_C",) {
+                            ExpenseDetailScreen(
+                                expense = ExpenseDetail(
+                                    expenseNumber = "12", // The expense number
+                                    date = "02 Dec 2020", // The date
+                                    description = "Electricity Bill", // The description
+                                    amount = 500.0 // The amount (in this case, 500)
+                                ),
+                                onNavigateBack = { navController.popBackStack() },
+                                navController = navController,
+                                modifier = Modifier,
+                            )
+                        }
                     })
                 }
             }
