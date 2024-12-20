@@ -1,5 +1,4 @@
 package com.example.expensetracker
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,46 +14,58 @@ import androidx.navigation.compose.rememberNavController
 import com.example.expensetracker.ui.theme.ExpenseTrackerTheme
 
 class MainActivity : ComponentActivity() {
+    private fun deleteExpenseFromDatabase(expenseNumber: String) {
+        println("Expense $expenseNumber deleted.")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             ExpenseTrackerTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                color =  MaterialTheme.colorScheme.background
-                ){
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController , startDestination = "Screen_A",builder = {
-                        composable("Screen_A",){
+                    NavHost(
+                        navController = navController,
+                        startDestination = "Screen_A"
+                    ) {
+                        composable("Screen_A") {
                             HomeScreen(navController)
                         }
-                        composable("Screen_B",){
+                        composable("Screen_B") {
                             RecordExpenseScreen(
                                 navController = navController,
                                 context = LocalContext.current,
                                 onSave = { date, description, amount, isExpense ->
-                                } )
-                        }
-                        composable("Screen_C",) {
-                            ExpenseDetailScreen(
-                                expense = ExpenseDetail(
-                                    expenseNumber = "12", // The expense number
-                                    date = "02 Dec 2020", // The date
-                                    description = "Electricity Bill", // The description
-                                    amount = 500.0 // The amount (in this case, 500)
-                                ),
-                                onNavigateBack = { navController.popBackStack() },
-                                navController = navController,
-                                modifier = Modifier,
+                                }
                             )
                         }
-                    })
+                        composable("Screen_C") {
+                            val expense = ExpenseDetail(
+                                expenseNumber = "001",
+                                date = "15 Oct 2024",
+                                description = "Electricity Bill Payment",
+                                amount = 1500.0
+                            )
+                            ExpenseDetailScreen(
+                                onNavigateBack = { navController.popBackStack() },
+                                navController = navController,
+                                expense = expense,
+                                modifier = Modifier.fillMaxSize(),
+                                onEditExpense = { exp ->
+                                    navController.navigate("EditExpenseScreen/${exp.expenseNumber}")
+                                },
+                                onDeleteExpense = { expenseNumber ->
+                                    deleteExpenseFromDatabase(expenseNumber)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
     }
 }
-
-
