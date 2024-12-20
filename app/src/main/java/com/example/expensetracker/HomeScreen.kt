@@ -11,11 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,11 +21,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun HomeScreen(navController: NavController) {
+    val auth = FirebaseAuth.getInstance()
     var searchQuery by remember { mutableStateOf("") }
     var transactions by remember { mutableStateOf(sampleTransactions.toMutableList()) }
+
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF8F8F8))) {
             // Search bar
@@ -61,6 +60,32 @@ fun HomeScreen(navController: NavController) {
                     )
                 }
             }
+
+            // Logout Button
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(16.dp),
+//                contentAlignment = Alignment.CenterEnd
+//            ) {
+//                Button(
+//                    onClick = {
+//                        auth.signOut() // Sign out the user from Firebase
+//                        navController.navigate("SignInScreen") { // Navigate back to Sign-In screen
+//                            popUpTo("HomeScreen") { inclusive = true }
+//                        }
+//                    },
+//                    shape = RoundedCornerShape(12.dp),
+//                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4C3CCE))
+//                ) {
+//                    Text(
+//                        text = "Logout",
+//                        color = Color.White,
+//                        fontSize = 16.sp
+//                    )
+//                }
+//            }
+
             Text(
                 text = "Recent Transactions",
                 modifier = Modifier.padding(16.dp),
@@ -80,18 +105,17 @@ fun HomeScreen(navController: NavController) {
                             transactions.remove(transaction)
                         },
                         onClick = {
-                            navController.navigate("Screen_C") // Navigate to a details screen
+                            navController.navigate("ExpenseDetailScreen") // Navigate to a details screen
                         }
                     )
                 }
             }
-
             Box(
                 contentAlignment = Alignment.BottomCenter,
                 modifier = Modifier.fillMaxWidth().padding(50.dp)
             ) {
                 Button(
-                    onClick = { navController.navigate("Screen_B") },
+                    onClick = { navController.navigate("RecordExpenseScreen") },
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4C3CCE))
                 ) {
@@ -105,11 +129,12 @@ fun HomeScreen(navController: NavController) {
         }
     }
 }
+
 @Composable
 fun TransactionCard(
     transaction: Transaction,
     onDelete: () -> Unit,
-    onClick: () -> Unit // Pass an onClick lambda to handle card clicks
+    onClick: () -> Unit
 ) {
     var offsetX by remember { mutableStateOf(0f) }
     var showDeleteButton by remember { mutableStateOf(false) }
@@ -130,9 +155,7 @@ fun TransactionCard(
                     }
                 )
             }
-            .clickable { onClick(
-//                navController.navigate("Screen_C")
-            ) } // Add the clickable modifier here
+            .clickable { onClick() }
     ) {
         Row(
             modifier = Modifier
@@ -166,8 +189,6 @@ fun TransactionCard(
         }
     }
 }
-
-
 
 data class Transaction(val title: String, val subtitle: String, val date: String, val amount: Double)
 

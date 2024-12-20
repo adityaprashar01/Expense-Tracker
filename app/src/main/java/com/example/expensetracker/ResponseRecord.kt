@@ -275,8 +275,6 @@ fun RecordExpenseScreen(
         }
     }
 }
-
-
 @Composable
 fun ToggleButton(text: String, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(

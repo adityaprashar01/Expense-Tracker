@@ -16,7 +16,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
-
 data class ExpenseDetail(
     val expenseNumber: String,
     val date: String,
@@ -47,8 +46,6 @@ fun ExpenseDetailScreen(
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
         ) {
-
-            // Top App Bar
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -103,8 +100,6 @@ fun ExpenseDetailScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            // Box for Expense Number
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -127,8 +122,6 @@ fun ExpenseDetailScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            // Box for Description
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -152,8 +145,6 @@ fun ExpenseDetailScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            // Box for Total Amount
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
