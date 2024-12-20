@@ -3,6 +3,7 @@
 This is a brief description of my app.
 
 ## Screenshot:
+![App Screenshot](demo2.png)
 ![App Screenshot](img.jpeg)
 
 ## Features:
