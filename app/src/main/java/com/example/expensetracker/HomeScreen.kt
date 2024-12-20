@@ -69,7 +69,6 @@ fun HomeScreen(navController: NavController) {
                 color = Color.Black
             )
 
-            // Filtered Transactions list
             LazyColumn(modifier = Modifier.weight(1f)) {
                 val filteredTransactions = transactions.filter {
                     it.title.contains(searchQuery, ignoreCase = true) ||
@@ -81,8 +80,6 @@ fun HomeScreen(navController: NavController) {
                     })
                 }
             }
-
-            // Bottom Center Button
             Box(
                 contentAlignment = Alignment.BottomCenter,
                 modifier = Modifier.fillMaxWidth().padding(50.dp)

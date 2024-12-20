@@ -42,7 +42,6 @@ fun RecordExpenseScreen(
                 .background(Color(0xFFF8F8F8))
                 .padding(16.dp)
         ) {
-            // Header
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -87,9 +86,8 @@ fun RecordExpenseScreen(
                     .fillMaxWidth()
                     .background(Color.White, RoundedCornerShape(8.dp))
                     .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)  // Space between items
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // "DATE" Label with red asterisk
                 Text(
                     text = buildAnnotatedString {
                         append("DATE")
@@ -107,7 +105,7 @@ fun RecordExpenseScreen(
                         .fillMaxWidth()
                         .height(48.dp)
                         .background(Color.White, RoundedCornerShape(8.dp))
-                        .border(BorderStroke(1.dp, Color.Gray), RoundedCornerShape(8.dp)), // Grey outline
+                        .border(BorderStroke(1.dp, Color.Gray), RoundedCornerShape(8.dp)),
                 ) {
                     BasicTextField(
                         value = selectedDate,
@@ -136,7 +134,7 @@ fun RecordExpenseScreen(
                             }
                         },
                         modifier = Modifier
-                            .size(24.dp) // Icon size
+                            .size(24.dp)
                             .align(Alignment.CenterEnd)
                             .padding(0.dp)
                     ) {
@@ -182,7 +180,6 @@ fun RecordExpenseScreen(
                             .fillMaxWidth()
                             .padding(start = 12.dp, end = 0.dp)
                             .align(Alignment.CenterStart),
-
                         decorationBox = { innerTextField ->
                             if (description.isEmpty()) {
                                 Text(
@@ -195,11 +192,7 @@ fun RecordExpenseScreen(
                         }
                     )
                 }
-
-
             }
-
-
 
             Spacer(modifier = Modifier.height(16.dp))
             Row(
@@ -209,7 +202,6 @@ fun RecordExpenseScreen(
                     .padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Label with red asterisk
                 Text(
                     text = buildAnnotatedString {
                         append("Total Amount ")
@@ -222,7 +214,6 @@ fun RecordExpenseScreen(
                     color = Color.Black,
                     modifier = Modifier.padding(end = 8.dp)
                 )
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -230,7 +221,6 @@ fun RecordExpenseScreen(
                         .background(Color.White, RoundedCornerShape(8.dp))
                         .border(BorderStroke(1.dp, Color.Gray), RoundedCornerShape(8.dp)),
                 ) {
-                    // Rupee symbol at the start
                     Text(
                         text = "₹",
                         fontWeight = FontWeight.Bold,
@@ -243,7 +233,11 @@ fun RecordExpenseScreen(
 
                     BasicTextField(
                         value = amount,
-                        onValueChange = { amount = it },
+                        onValueChange = {
+                            if (it.matches("^[0-9]*\\.?[0-9]{0,2}\$".toRegex())) {
+                                amount = it
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 40.dp)
@@ -255,13 +249,7 @@ fun RecordExpenseScreen(
                 }
             }
 
-
-
-
-
             Spacer(modifier = Modifier.height(32.dp))
-
-            // Save Button
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 color = Color(0xFF4C3CCE),
@@ -287,6 +275,7 @@ fun RecordExpenseScreen(
         }
     }
 }
+
 
 @Composable
 fun ToggleButton(text: String, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -340,3 +329,4 @@ fun getMonthName(month: Int): String {
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     )[month]
 }
+
