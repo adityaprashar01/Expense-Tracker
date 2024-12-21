@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Expense Tracker</string>
+    <string name="default_web_client_id">1037011259004-8r76r3n2pf0o4qagocs3l26k8ejesem7.apps.googleusercontent.com</string>
 </resources>
